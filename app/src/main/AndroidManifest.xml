@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/app_icon2"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon_round"
+        android:roundIcon="@mipmap/app_icon2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Individualproject_wakchavarep1"
         tools:targetApi="31">
@@ -29,6 +29,21 @@
 
         <activity
             android:name=".RegisterActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".RulesActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".QuestionsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".DisplayScoreActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".HistoryActivity"
             android:exported="true">
         </activity>
 
