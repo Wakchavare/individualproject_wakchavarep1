@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D3C8E6"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/rulesTextView"
+        android:layout_width="306dp"
+        android:layout_height="52dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="101dp"
+        android:layout_marginBottom="513dp"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="true"
+        android:text="Rules to Play Quiz "
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="351dp"
+        android:layout_height="443dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="57dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="true"
+                android:paddingBottom="8dp"
+                android:text="1. Prevent cheating by implementing mechanisms to discourage or detect unauthorized access to answers or game resources." />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="true"
+                android:paddingBottom="8dp"
+                android:text="2. Players progress through the game by answering questions correctly " />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="true"
+                android:paddingBottom="8dp"
+                android:text="3. Players can get single correct or multiple choices answers " />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="true"
+                android:paddingBottom="8dp"
+                android:text="4.Score reflects the player's performance in the quiz." />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rulesTextView"
+                android:layout_centerHorizontal="true"
+                android:text="Next" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
