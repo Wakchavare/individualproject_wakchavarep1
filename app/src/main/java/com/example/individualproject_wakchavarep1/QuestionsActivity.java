@@ -25,7 +25,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private List<QuizQuestion> quizQuestions;
     private SharedPreferences sharedPreferences;
-    private LinearLayout mainLayout;
+    private LinearLayout questionLayout; // Reference to the question layout
     private Button submitButton;
     private int userScore = 0;
     private int currentQuestionIndex = 0;
@@ -37,7 +37,7 @@ public class QuestionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
 
-        mainLayout = findViewById(R.id.main_layout);
+        questionLayout = findViewById(R.id.question_layout); // Assigning question layout
         submitButton = findViewById(R.id.submit_button);
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("user_score", MODE_PRIVATE);
@@ -65,10 +65,11 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private void displayQuestion(int index) {
         QuizQuestion question = quizQuestions.get(index);
+        questionLayout.removeAllViews(); // Clear previous question and options
 
         TextView questionText = new TextView(this);
         questionText.setText(question.getQuestion());
-        mainLayout.addView(questionText);
+        questionLayout.addView(questionText);
 
         if (question.getType() == QuestionType.SINGLE) {
             RadioGroup radioGroup = new RadioGroup(this);
@@ -78,9 +79,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 radioButton.setText(option);
                 radioGroup.addView(radioButton);
             }
-            mainLayout.addView(radioGroup);
-
-            // Set the currentRadioGroup to the newly created radio group
+            questionLayout.addView(radioGroup);
             currentRadioGroup = radioGroup;
             currentCheckBoxLayout = null; // Reset the checkbox layout
         } else {
@@ -91,9 +90,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 checkBox.setText(option);
                 checkBoxLayout.addView(checkBox);
             }
-            mainLayout.addView(checkBoxLayout);
-
-            // Set the currentCheckBoxLayout to the newly created checkbox layout
+            questionLayout.addView(checkBoxLayout);
             currentCheckBoxLayout = checkBoxLayout;
             currentRadioGroup = null; // Reset the radio group
         }
@@ -106,83 +103,61 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                // Continue with answer checking
-                checkSelectedOption();
+                if (checkSelectedOption()) {
+                    userScore++;
+                }
+                saveUserScore(userScore);
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.size()) {
+                    displayQuestion(currentQuestionIndex);
+                } else {
+                    Toast.makeText(QuestionsActivity.this, "End of questions", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(QuestionsActivity.this, DisplayScoreActivity.class);
+                    startActivity(intent);
+                    finish();
+                    saveUserHistory();
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                // User cancels, do nothing or provide feedback
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    private void checkSelectedOption() {
-        System.out.println("############ Function Called: " + this.userScore);
+    private boolean checkSelectedOption() {
         QuizQuestion currentQuestion = quizQuestions.get(currentQuestionIndex);
+        boolean correct = false;
 
         if (currentRadioGroup != null) {
             int radioButtonID = currentRadioGroup.getCheckedRadioButtonId();
             View radioButton = currentRadioGroup.findViewById(radioButtonID);
-            int idx = currentRadioGroup.indexOfChild(radioButton);
-            RadioButton r = (RadioButton) currentRadioGroup.getChildAt(idx);
-            String selectedText = r.getText().toString();
-            System.out.println("############ " + currentQuestionIndex + " : " + selectedText);
-            if (currentQuestion.getAnswer().contains(selectedText)) {
-                // Correct Answer!
-                this.userScore++;
-                System.out.println("############ Correct Answer Radio Button: " + selectedText);
-            } else {
-                // Incorrect Answer!
+            if (radioButton != null) {
+                int idx = currentRadioGroup.indexOfChild(radioButton);
+                RadioButton r = (RadioButton) currentRadioGroup.getChildAt(idx);
+                String selectedText = r.getText().toString();
+                if (currentQuestion.getAnswer().contains(selectedText)) {
+                    correct = true;
+                }
             }
         } else if (currentCheckBoxLayout != null) {
-            LinearLayout checkBoxLayout = currentCheckBoxLayout;
             int correctChoices = 0;
-            for (int i = 0; i < checkBoxLayout.getChildCount(); i++) {
-                CheckBox checkBox = (CheckBox) checkBoxLayout.getChildAt(i);
+            for (int i = 0; i < currentCheckBoxLayout.getChildCount(); i++) {
+                CheckBox checkBox = (CheckBox) currentCheckBoxLayout.getChildAt(i);
                 if (checkBox.isChecked() && currentQuestion.getAnswer().contains(checkBox.getText().toString())) {
                     correctChoices++;
-
-                } else if (checkBox.isChecked() && !currentQuestion.getAnswer().contains(checkBox.getText().toString())) {
-                    // If a wrong choice is selected
-                    // Incorrect Answer!
                 }
             }
             if (correctChoices == currentQuestion.getAnswer().size()) {
-                // Correct Answer!
-                this.userScore++; // Increment the score for correct answers
-                System.out.println("############ Correct Answer CheckBox: ");
-            } else {
-                // Incorrect Answer!
+                correct = true;
             }
         }
 
-        // Save the user's score
-        saveUserScore(this.userScore);
-
-        // Remove the views related to the current question
-        mainLayout.removeViewAt(mainLayout.getChildCount() - 1); // Remove submit button
-        mainLayout.removeViewAt(mainLayout.getChildCount() - 1); // Remove question view
-
-        // Move to the next question
-        currentQuestionIndex++;
-
-        // Display next question if available
-        if (currentQuestionIndex < quizQuestions.size()) {
-            displayQuestion(currentQuestionIndex);
-        } else {
-            // End of questions
-            Toast.makeText(this, "End of questions", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(QuestionsActivity.this, DisplayScoreActivity.class);
-            startActivity(intent);
-            finish(); // Finish the current activity
-            // Save user history
-            saveUserHistory();
-        }
+        return correct;
     }
 
     private void saveUserScore(int score) {
@@ -190,12 +165,10 @@ public class QuestionsActivity extends AppCompatActivity {
         editor.putInt("user_score", score);
         editor.apply();
     }
-    private void saveUserHistory() {
-        // Get current date and time
-        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        // Save user history
-        saveUserHistory(currentTime, this.userScore);
+    private void saveUserHistory() {
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        saveUserHistory(currentTime, userScore);
     }
 
     private void saveUserHistory(String time, int score) {
