@@ -23,6 +23,6 @@ public class DisplayScoreActivity extends AppCompatActivity {
         int userScore = sharedPreferences.getInt("user_score", 0);
 
         // Display the user's score
-        scoreTextView.setText("Your Score: " + userScore);
+        scoreTextView.setText("Your Score: " + userScore+"/10");
     }
 }

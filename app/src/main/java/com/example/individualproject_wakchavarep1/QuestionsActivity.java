@@ -59,7 +59,13 @@ public class QuestionsActivity extends AppCompatActivity {
                 new QuizQuestion("2. Which of these is not a character in the game \"Overwatch\"?", Arrays.asList("Tracer", "Reinhardt", "Sora", "Mercy"), Collections.singletonList("Sora"), QuestionType.SINGLE),
                 new QuizQuestion("3. Which of the following are playable characters in \"Super Smash Bros. Ultimate\"?", Arrays.asList("Mario", "Pikachu", "Donkey Kong", "Kirby"), Arrays.asList("Mario", "Pikachu"), QuestionType.MULTIPLE),
                 new QuizQuestion("4. Which of the following are weapons in the game \"Counter-Strike: Global Offensive\"?", Arrays.asList("AK-47", "AWP", "M4A1", "Desert Eagle"), Arrays.asList("AK-47", "AWP", "M4A1"), QuestionType.MULTIPLE),
-                new QuizQuestion("5. In \"Minecraft\", what is the primary material used to craft tools?", Arrays.asList("Wood", "Stone", "Iron", "Diamond"), Collections.singletonList("Wood"), QuestionType.SINGLE)
+                new QuizQuestion("5. In \"Minecraft\", what is the primary material used to craft tools?", Arrays.asList("Wood", "Stone", "Iron", "Diamond"), Collections.singletonList("Wood"), QuestionType.SINGLE),
+                new QuizQuestion("6. In the game \"League of Legends\", which of these champions is not a marksman (ADC)?", Arrays.asList("Ashe", "Thresh", "Jhin", "Miss Fortune"), Collections.singletonList("Thresh"), QuestionType.SINGLE),
+                new QuizQuestion("7. Which of these is not a city in the game \"The Witcher 3: Wild Hunt\"?", Arrays.asList("Novigrad", "White Orchard", "Rivendell", "Velen"), Collections.singletonList("Rivendell"), QuestionType.SINGLE),
+                new QuizQuestion("8. Which of the following characters is not part of the original \"Street Fighter II\" roster?", Arrays.asList("Ryu", "Ken", "Chun-Li", "Akuma"), Collections.singletonList("Akuma"), QuestionType.SINGLE),
+                new QuizQuestion("9. What is the name of the main protagonist in the game \"The Legend of Zelda: Breath of the Wild\"?", Arrays.asList("Link", "Zelda", "Ganondorf", "Sheik"), Collections.singletonList("Link"), QuestionType.SINGLE),
+                new QuizQuestion("10. Which of the following is not a playable race in \"World of Warcraft\"?", Arrays.asList("Human", "Orc", "Goblin", "Centaur"), Collections.singletonList("Centaur"), QuestionType.SINGLE)
+
         );
     }
 
